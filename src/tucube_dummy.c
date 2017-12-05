@@ -39,14 +39,14 @@ int tucube_IModule_init(struct tucube_Module* module, struct tucube_Config* conf
     pthread_key_create(module->tlModuleKey, NULL);
 
     struct tucube_dummy_LocalModule* localModule = module->localModule.pointer;
-    TUCUBE_CONFIG_GET(config, module->name, "tucube_dummy.id", string, &(localModule->id), "ANONYMOUS");
-    TUCUBE_CONFIG_GET(config, module->name, "tucube_dummy.interval", integer, &(localModule->interval), 1);
-    TUCUBE_CONFIG_GET(config, module->name, "tucube_dummy.requiresNext", integer, &(localModule->requiresNext), 0);
+    TUCUBE_CONFIG_GET(config, module->id, "tucube_dummy.id", string, &(localModule->id), "ANONYMOUS");
+    TUCUBE_CONFIG_GET(config, module->id, "tucube_dummy.interval", integer, &(localModule->interval), 1);
+    TUCUBE_CONFIG_GET(config, module->id, "tucube_dummy.requiresNext", integer, &(localModule->requiresNext), 0);
 /*
-    struct tucube_Module_Names childModuleNames;
-    GENC_ARRAY_LIST_INIT(&childModuleNames);
-    TUCUBE_MODULE_GET_CHILD_MODULE_NAMES(config, module->name, &childModuleNames);
-    if(GENC_ARRAY_LIST_SIZE(&childModuleNames) == 0)
+    struct tucube_Module_Ids childModuleIds;
+    GENC_ARRAY_LIST_INIT(&childModuleIds);
+    TUCUBE_MODULE_GET_CHILD_MODULE_IDS(config, module->id, &childModuleIds);
+    if(GENC_ARRAY_LIST_SIZE(&childModuleIds) == 0)
         errx(EXIT_FAILURE, "%s: %u: tucube_dummy requires next modules", __FILE__, __LINE__);
 */
     return 0;
