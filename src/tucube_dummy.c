@@ -40,14 +40,15 @@ int tucube_IModule_init(struct tucube_Module* module, struct tucube_Config* conf
     TUCUBE_CONFIG_GET_CHILD_MODULE_IDS(config, module->id, &childModuleIds);
     if(localModule->requiresNext && GENC_ARRAY_LIST_SIZE(&childModuleIds) == 0)
         errx(EXIT_FAILURE, "%s: %u: tucube_dummy requires at least one next module", __FILE__, __LINE__);
-
     return 0;
 }
 
 int tucube_ICore_service(struct tucube_Module* module, void* args[]) {
     struct tucube_dummy_LocalModule* localModule = module->localModule.pointer;
     while(true) {
-        warnx("%s", localModule->message);
+        warnx("Module message: %s", localModule->message);
+        struct tucube_Module* parentModule = GENC_TREE_NODE_GET_PARENT(module);
+        warnx("ID of my parent module is %s", parentModule->id); 
         sleep(localModule->interval);
     }
     return 0;
