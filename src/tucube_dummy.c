@@ -45,9 +45,9 @@ int tucube_IModule_init(struct tucube_Module* module, struct tucube_Config* conf
 
 int tucube_ICore_service(struct tucube_Module* module, void* args[]) {
     struct tucube_dummy_LocalModule* localModule = module->localModule.pointer;
+    struct tucube_Module* parentModule = GENC_TREE_NODE_GET_PARENT(module);
     while(true) {
         warnx("Module message: %s", localModule->message);
-        struct tucube_Module* parentModule = GENC_TREE_NODE_GET_PARENT(module);
         warnx("ID of my parent module is %s", parentModule->id); 
         sleep(localModule->interval);
     }
