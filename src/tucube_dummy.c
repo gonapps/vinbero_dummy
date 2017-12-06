@@ -18,7 +18,7 @@ struct tucube_dummy_Interface {
 };
 
 struct tucube_dummy_LocalModule {
-    const char* id;
+    const char* message;
     int interval;
     int requiresNext;
 };
@@ -31,23 +31,23 @@ int tucube_IModule_init(struct tucube_Module* module, struct tucube_Config* conf
     module->localModule.pointer = malloc(1 * sizeof(struct tucube_dummy_LocalModule));
 
     struct tucube_dummy_LocalModule* localModule = module->localModule.pointer;
-    TUCUBE_CONFIG_GET(config, module->id, "tucube_dummy.id", string, &(localModule->id), "ANONYMOUS");
+    TUCUBE_CONFIG_GET(config, module->id, "tucube_dummy.message", string, &(localModule->message), "I HAVE NOTHING TO SAY");
     TUCUBE_CONFIG_GET(config, module->id, "tucube_dummy.interval", integer, &(localModule->interval), 1);
     TUCUBE_CONFIG_GET(config, module->id, "tucube_dummy.requiresNext", integer, &(localModule->requiresNext), 0);
-/*
+
     struct tucube_Module_Ids childModuleIds;
     GENC_ARRAY_LIST_INIT(&childModuleIds);
-    TUCUBE_MODULE_GET_CHILD_MODULE_IDS(config, module->id, &childModuleIds);
-    if(GENC_ARRAY_LIST_SIZE(&childModuleIds) == 0)
-        errx(EXIT_FAILURE, "%s: %u: tucube_dummy requires next modules", __FILE__, __LINE__);
-*/
+    TUCUBE_CONFIG_GET_CHILD_MODULE_IDS(config, module->id, &childModuleIds);
+    if(localModule->requiresNext && GENC_ARRAY_LIST_SIZE(&childModuleIds) == 0)
+        errx(EXIT_FAILURE, "%s: %u: tucube_dummy requires at least one next module", __FILE__, __LINE__);
+
     return 0;
 }
 
 int tucube_ICore_service(struct tucube_Module* module, void* args[]) {
     struct tucube_dummy_LocalModule* localModule = module->localModule.pointer;
     while(true) {
-        warnx("ID: %s", localModule->id);
+        warnx("%s", localModule->message);
         sleep(localModule->interval);
     }
     return 0;

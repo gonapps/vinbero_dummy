@@ -5,7 +5,7 @@
     }, 
     "tucube_dummy": {
         "path": "/usr/local/lib/tucube/tucube_dummy.so",
-        "config": {"tucube_dummy.id": "dummymodule"},
+        "config": {"tucube_dummy.message": "Hello I am a dummy module!"},
         "next": []
     }
 }
