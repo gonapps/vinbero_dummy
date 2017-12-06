@@ -1,6 +1,6 @@
 {
     "core": {
-        "config": {"tucube.workerCount": 2, "tucube.protocol": "TCP", "tucube.port": 8001, "tucube.setUid": 1001},
+        "config": {"tucube.setUid": 1001},
         "next": ["tucube_dummy"]
     }, 
     "tucube_dummy": {
