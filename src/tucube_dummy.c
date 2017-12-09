@@ -84,9 +84,9 @@ struct tucube_dummy_LocalModule* localModule = module->localModule.pointer;
         struct tucube_Module* childModule = &GENC_TREE_NODE_GET_CHILD(module, index);
         free(childModule->interface);
     }
-    free(module->tlModuleKey);
     free(module->localModule.pointer);
-    free(module);
+    if(module->tlModuleKey != NULL)
+        free(module->tlModuleKey);
 //    dlclose(module->dl_handle);
     return 0;
 }
