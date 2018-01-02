@@ -31,8 +31,8 @@ int tucube_IModule_init(struct tucube_Module* module, struct tucube_Config* conf
     module->localModule.pointer = malloc(1 * sizeof(struct tucube_dummy_LocalModule));
 
     struct tucube_dummy_LocalModule* localModule = module->localModule.pointer;
-    TUCUBE_CONFIG_GET(config, module->id, "tucube_dummy.message", string, &(localModule->message), "I HAVE NOTHING TO SAY");
-    TUCUBE_CONFIG_GET(config, module->id, "tucube_dummy.interval", integer, &(localModule->interval), 1);
+    TUCUBE_CONFIG_GET(config, module, "tucube_dummy.message", string, &(localModule->message), "I HAVE NOTHING TO SAY");
+    TUCUBE_CONFIG_GET(config, module, "tucube_dummy.interval", integer, &(localModule->interval), 1);
 
     struct tucube_Module_Ids childModuleIds;
     GENC_ARRAY_LIST_INIT(&childModuleIds);
