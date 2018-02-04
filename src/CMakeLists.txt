@@ -1,3 +1,3 @@
-add_library(tucube_dummy MODULE tucube_dummy.c)
-set_target_properties(tucube_dummy PROPERTIES PREFIX "")
-install(TARGETS tucube_dummy DESTINATION lib/tucube)
+add_library(vinbero_dummy MODULE vinbero_dummy.c)
+set_target_properties(vinbero_dummy PROPERTIES PREFIX "")
+install(TARGETS vinbero_dummy DESTINATION lib/vinbero)

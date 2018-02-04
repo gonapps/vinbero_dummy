@@ -1,11 +1,11 @@
 {
     "core": {
-        "config": {"tucube.workerCount": 2, "tucube.protocol": "TCP", "tucube.port": 8001, "tucube.setUid": 1001},
-        "next": ["tucube_dummy"]
+        "config": {"vinbero.workerCount": 2, "vinbero.protocol": "TCP", "vinbero.port": 8001, "vinbero.setUid": 1001},
+        "next": ["vinbero_dummy"]
     }, 
-    "tucube_dummy": {
-        "path": "/usr/local/lib/tucube/tucube_dummy.so",
-        "config": {"tucube_dummy.id": "dummymodule"},
+    "vinbero_dummy": {
+        "path": "/usr/local/lib/vinbero/vinbero_dummy.so",
+        "config": {"vinbero_dummy.id": "dummymodule"},
         "next": []
     }
 }
