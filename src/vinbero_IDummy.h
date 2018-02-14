@@ -14,9 +14,9 @@ struct vinbero_IDummy_Interface {
 };
 
 #define VINBERO_IDUMMY_DLSYM(interface, childModule, errorVariable)                      \
-do {                                                                                        \
+do {                                                                                     \
     VINBERO_MODULE_DLSYM(interface, childModule, vinbero_IDummy_service, errorVariable); \
-    if(*errorVariable == 1) break;                                                          \
+    if(*errorVariable == 1) break;                                                       \
 } while(0)
 
 
