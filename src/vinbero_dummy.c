@@ -11,10 +11,6 @@
 #include <libgenc/genc_Tree.h>
 #include "vinbero_IDummy.h"
 
-struct vinbero_dummy_Interface {
-    VINBERO_IDUMMY_FUNCTION_POINTERS;
-};
-
 struct vinbero_dummy_LocalModule {
     const char* message;
     int interval;
@@ -34,18 +30,10 @@ int vinbero_IModule_init(struct vinbero_Module* module, struct vinbero_Config* c
     VINBERO_CONFIG_GET(config, module, "vinbero_dummy.message", string, &(localModule->message), "I HAVE NOTHING TO SAY");
     VINBERO_CONFIG_GET(config, module, "vinbero_dummy.interval", integer, &(localModule->interval), 1);
 
-    struct vinbero_Module_Ids childModuleIds;
-    GENC_ARRAY_LIST_INIT(&childModuleIds);
-    VINBERO_CONFIG_GET_CHILD_MODULE_IDS(config, module->id, &childModuleIds);
-    GENC_TREE_NODE_FOR_EACH_CHILD(module, index) {
-        struct vinbero_Module* childModule = &GENC_TREE_NODE_GET_CHILD(module, index);
-        childModule->interface = malloc(1 * sizeof(struct vinbero_dummy_Interface));
-        struct vinbero_dummy_Interface* moduleInterface = childModule->interface;
-        if((moduleInterface->vinbero_IDummy_service = dlsym(childModule->dlHandle, "vinbero_IDummy_service")) == NULL) {
-            warnx("%s: %u: Unable to find vinbero_IDummy_service()", __FILE__, __LINE__);
-            return -1;
-        }
-    }
+    return 0;
+}
+
+int vinbero_IModule_rInit(struct vinbero_Module* module, struct vinbero_Config* config, void* args[]) {
     return 0;
 }
 
@@ -57,8 +45,10 @@ int vinbero_IBasic_service(struct vinbero_Module* module, void* args[]) {
         warnx("ID of my parent module is %s", parentModule->id); 
         GENC_TREE_NODE_FOR_EACH_CHILD(module, index) {
             struct vinbero_Module* childModule = &GENC_TREE_NODE_GET_CHILD(module, index);
-            struct vinbero_dummy_Interface* moduleInterface = childModule->interface;
-            moduleInterface->vinbero_IDummy_service(childModule);
+            struct vinbero_IDummy_Interface interface;
+            int errorVariable;
+            VINBERO_IDUMMY_DLSYM(&interface, childModule, &errorVariable);
+            interface.vinbero_IDummy_service(childModule);
         }
         sleep(localModule->interval);
     }
@@ -71,20 +61,23 @@ int vinbero_IDummy_service(struct vinbero_Module* module) {
     warnx("Module message: %s", localModule->message);
     warnx("ID of my parent module is %s", parentModule->id); 
     GENC_TREE_NODE_FOR_EACH_CHILD(module, index) {
-        struct vinbero_Module* childModule = &GENC_TREE_NODE_GET_CHILD(module, index);
-        struct vinbero_dummy_Interface* moduleInterface = childModule->interface;
-        moduleInterface->vinbero_IDummy_service(childModule);
+            struct vinbero_Module* childModule = &GENC_TREE_NODE_GET_CHILD(module, index);
+            struct vinbero_IDummy_Interface interface;
+            int errorVariable;
+            VINBERO_IDUMMY_DLSYM(&interface, childModule, &errorVariable);
+            interface.vinbero_IDummy_service(childModule);
     }
     return 0;
 }
 
 int vinbero_IModule_destroy(struct vinbero_Module* module) {
-struct vinbero_dummy_LocalModule* localModule = module->localModule.pointer;
     warnx("%s: %u: %s", __FILE__, __LINE__, __FUNCTION__);
-    GENC_TREE_NODE_FOR_EACH_CHILD(module, index) {
-        struct vinbero_Module* childModule = &GENC_TREE_NODE_GET_CHILD(module, index);
-        free(childModule->interface);
-    }
+    return 0;
+}
+
+int vinbero_IModule_rDestroy(struct vinbero_Module* module) {
+warnx("%s: %u: %s", __FILE__, __LINE__, __FUNCTION__);
+    struct vinbero_dummy_LocalModule* localModule = module->localModule.pointer;
     free(module->localModule.pointer);
     if(module->tlModuleKey != NULL)
         free(module->tlModuleKey);
