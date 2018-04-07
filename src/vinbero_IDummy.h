@@ -13,10 +13,10 @@ struct vinbero_IDummy_Interface {
     VINBERO_IDUMMY_FUNCTION_POINTERS;
 };
 
-#define VINBERO_IDUMMY_DLSYM(interface, childModule, errorVariable)                      \
-do {                                                                                     \
-    VINBERO_MODULE_DLSYM(interface, childModule, vinbero_IDummy_service, errorVariable); \
-    if(*errorVariable == 1) break;                                                       \
+#define VINBERO_IDUMMY_DLSYM(interface, dlHandle, errorVariable) \
+do { \
+    VINBERO_MODULE_DLSYM(interface, dlHandle, vinbero_IDummy_service, errorVariable); \
+    if(*errorVariable == 1) break; \
 } while(0)
 
 
