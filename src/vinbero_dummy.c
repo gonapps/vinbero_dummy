@@ -47,7 +47,7 @@ int vinbero_IBasic_service(struct vinbero_Module* module, void* args[]) {
             struct vinbero_Module* childModule = &GENC_TREE_NODE_GET_CHILD(module, index);
             struct vinbero_IDummy_Interface interface;
             int errorVariable;
-            VINBERO_IDUMMY_DLSYM(&interface, childModule->dlHandle, &errorVariable);
+            VINBERO_IDUMMY_DLSYM(&interface, &childModule->dlHandle, &errorVariable);
             if(errorVariable == 1)
                 return -1;
             interface.vinbero_IDummy_service(childModule);
@@ -66,7 +66,7 @@ int vinbero_IDummy_service(struct vinbero_Module* module) {
         struct vinbero_Module* childModule = &GENC_TREE_NODE_GET_CHILD(module, index);
         struct vinbero_IDummy_Interface interface;
         int errorVariable;
-        VINBERO_IDUMMY_DLSYM(&interface, childModule->dlHandle, &errorVariable);
+        VINBERO_IDUMMY_DLSYM(&interface, &childModule->dlHandle, &errorVariable);
         interface.vinbero_IDummy_service(childModule);
     }
     return 0;
