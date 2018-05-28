@@ -5,13 +5,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <vinbero_common/vinbero_common_Call.h>
 #include <vinbero_common/vinbero_common_Config.h>
 #include <vinbero_common/vinbero_common_Log.h>
 #include <vinbero_common/vinbero_common_Module.h>
 #include <vinbero/vinbero_IModule.h>
 #include <vinbero/vinbero_IBasic.h>
 #include <libgenc/genc_Tree.h>
-#include "vinbero_IDummy.h"
+#include "vinbero_IDUMMY.h"
 
 struct vinbero_dummy_LocalModule {
     const char* message;
@@ -42,6 +43,7 @@ int vinbero_IModule_rInit(struct vinbero_common_Module* module, struct vinbero_c
 }
 
 int vinbero_IBasic_service(struct vinbero_common_Module* module, void* args[]) {
+    int ret;
     struct vinbero_dummy_LocalModule* localModule = module->localModule.pointer;
     struct vinbero_common_Module* parentModule = GENC_TREE_NODE_GET_PARENT(module);
     while(true) {
@@ -49,31 +51,26 @@ int vinbero_IBasic_service(struct vinbero_common_Module* module, void* args[]) {
         VINBERO_COMMON_LOG_INFO("ID of my parent module is %s", parentModule->id); 
         GENC_TREE_NODE_FOR_EACH_CHILD(module, index) {
             struct vinbero_common_Module* childModule = &GENC_TREE_NODE_GET_CHILD(module, index);
-            struct vinbero_IDummy_Interface interface;
-            int ret;
-            VINBERO_IDUMMY_DLSYM(&interface, &childModule->dlHandle, &ret);
+            VINBERO_COMMON_CALL(IDUMMY, service, childModule, &ret, childModule);
             if(ret < 0)
                 return ret;
-            interface.vinbero_IDummy_service(childModule);
         }
         sleep(localModule->interval);
     }
     return 0;
 }
 
-int vinbero_IDummy_service(struct vinbero_common_Module* module) {
+int vinbero_IDUMMY_service(struct vinbero_common_Module* module) {
+    int ret;
     struct vinbero_dummy_LocalModule* localModule = module->localModule.pointer;
     struct vinbero_common_Module* parentModule = GENC_TREE_NODE_GET_PARENT(module);
     VINBERO_COMMON_LOG_INFO("Module message: %s", localModule->message);
     VINBERO_COMMON_LOG_INFO("ID of my parent module is %s", parentModule->id); 
     GENC_TREE_NODE_FOR_EACH_CHILD(module, index) {
         struct vinbero_common_Module* childModule = &GENC_TREE_NODE_GET_CHILD(module, index);
-        struct vinbero_IDummy_Interface interface;
-        int ret;
-        VINBERO_IDUMMY_DLSYM(&interface, &childModule->dlHandle, &ret);
+        VINBERO_COMMON_CALL(IDUMMY, service, childModule, &ret, childModule);
         if(ret < 0)
             return ret;
-        interface.vinbero_IDummy_service(childModule);
     }
     return 0;
 }
