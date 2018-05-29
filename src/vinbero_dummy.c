@@ -48,8 +48,8 @@ int vinbero_IBASIC_service(struct vinbero_common_Module* module, void* args[]) {
     struct vinbero_dummy_LocalModule* localModule = module->localModule.pointer;
     struct vinbero_common_Module* parentModule = GENC_TREE_NODE_GET_PARENT(module);
     while(true) {
-        VINBERO_COMMON_LOG_INFO("Module message: %s", localModule->message);
-        VINBERO_COMMON_LOG_INFO("ID of my parent module is %s", parentModule->id); 
+        VINBERO_COMMON_LOG_DEBUG("Module message: %s", localModule->message);
+        VINBERO_COMMON_LOG_DEBUG("ID of my parent module is %s", parentModule->id); 
         GENC_TREE_NODE_FOR_EACH_CHILD(module, index) {
             struct vinbero_common_Module* childModule = &GENC_TREE_NODE_GET_CHILD(module, index);
             VINBERO_COMMON_CALL(IDUMMY, service, childModule, &ret, childModule);
@@ -66,8 +66,8 @@ int vinbero_IDUMMY_service(struct vinbero_common_Module* module) {
     int ret;
     struct vinbero_dummy_LocalModule* localModule = module->localModule.pointer;
     struct vinbero_common_Module* parentModule = GENC_TREE_NODE_GET_PARENT(module);
-    VINBERO_COMMON_LOG_INFO("Module message: %s", localModule->message);
-    VINBERO_COMMON_LOG_INFO("ID of my parent module is %s", parentModule->id); 
+    VINBERO_COMMON_LOG_DEBUG("Module message: %s", localModule->message);
+    VINBERO_COMMON_LOG_DEBUG("ID of my parent module is %s", parentModule->id); 
     GENC_TREE_NODE_FOR_EACH_CHILD(module, index) {
         struct vinbero_common_Module* childModule = &GENC_TREE_NODE_GET_CHILD(module, index);
         VINBERO_COMMON_CALL(IDUMMY, service, childModule, &ret, childModule);
