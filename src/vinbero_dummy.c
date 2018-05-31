@@ -9,21 +9,21 @@
 #include <vinbero_common/vinbero_common_Config.h>
 #include <vinbero_common/vinbero_common_Log.h>
 #include <vinbero_common/vinbero_common_Module.h>
-#include <vinbero/vinbero_IMODULE.h>
-#include <vinbero/vinbero_IBASIC.h>
+#include <vinbero/vinbero_Interface_MODULE.h>
+#include <vinbero/vinbero_Interface_BASIC.h>
 #include <libgenc/genc_Tree.h>
-#include "vinbero_IDUMMY.h"
+#include "vinbero_Interface_DUMMY.h"
 
 struct vinbero_dummy_LocalModule {
     const char* message;
     int interval;
 };
 
-VINBERO_IMODULE_FUNCTIONS;
-VINBERO_IBASIC_FUNCTIONS;
-VINBERO_IDUMMY_FUNCTIONS;
+VINBERO_INTERFACE_MODULE_FUNCTIONS;
+VINBERO_INTERFACE_BASIC_FUNCTIONS;
+VINBERO_INTERFACE_DUMMY_FUNCTIONS;
 
-int vinbero_IMODULE_init(struct vinbero_common_Module* module, struct vinbero_common_Config* config, void* args[]) {
+int vinbero_Interface_MODULE_init(struct vinbero_common_Module* module, struct vinbero_common_Config* config, void* args[]) {
     VINBERO_COMMON_LOG_TRACE2();
     module->name = "vinbero_Dummy";
     module->version = "0.0.1";
@@ -37,12 +37,12 @@ int vinbero_IMODULE_init(struct vinbero_common_Module* module, struct vinbero_co
     return 0;
 }
 
-int vinbero_IMODULE_rInit(struct vinbero_common_Module* module, struct vinbero_common_Config* config, void* args[]) {
+int vinbero_Interface_MODULE_rInit(struct vinbero_common_Module* module, struct vinbero_common_Config* config, void* args[]) {
     VINBERO_COMMON_LOG_TRACE2();
     return 0;
 }
 
-int vinbero_IBASIC_service(struct vinbero_common_Module* module, void* args[]) {
+int vinbero_Interface_BASIC_service(struct vinbero_common_Module* module, void* args[]) {
     VINBERO_COMMON_LOG_TRACE2();
     int ret;
     struct vinbero_dummy_LocalModule* localModule = module->localModule.pointer;
@@ -52,7 +52,7 @@ int vinbero_IBASIC_service(struct vinbero_common_Module* module, void* args[]) {
         VINBERO_COMMON_LOG_DEBUG("ID of my parent module is %s", parentModule->id); 
         GENC_TREE_NODE_FOR_EACH_CHILD(module, index) {
             struct vinbero_common_Module* childModule = &GENC_TREE_NODE_GET_CHILD(module, index);
-            VINBERO_COMMON_CALL(IDUMMY, service, childModule, &ret, childModule);
+            VINBERO_COMMON_CALL(DUMMY, service, childModule, &ret, childModule);
             if(ret < 0)
                 return ret;
         }
@@ -61,7 +61,7 @@ int vinbero_IBASIC_service(struct vinbero_common_Module* module, void* args[]) {
     return 0;
 }
 
-int vinbero_IDUMMY_service(struct vinbero_common_Module* module) {
+int vinbero_Interface_DUMMY_service(struct vinbero_common_Module* module) {
     VINBERO_COMMON_LOG_TRACE2();
     int ret;
     struct vinbero_dummy_LocalModule* localModule = module->localModule.pointer;
@@ -70,19 +70,19 @@ int vinbero_IDUMMY_service(struct vinbero_common_Module* module) {
     VINBERO_COMMON_LOG_DEBUG("ID of my parent module is %s", parentModule->id); 
     GENC_TREE_NODE_FOR_EACH_CHILD(module, index) {
         struct vinbero_common_Module* childModule = &GENC_TREE_NODE_GET_CHILD(module, index);
-        VINBERO_COMMON_CALL(IDUMMY, service, childModule, &ret, childModule);
+        VINBERO_COMMON_CALL(DUMMY, service, childModule, &ret, childModule);
         if(ret < 0)
             return ret;
     }
     return 0;
 }
 
-int vinbero_IMODULE_destroy(struct vinbero_common_Module* module) {
+int vinbero_Interface_MODULE_destroy(struct vinbero_common_Module* module) {
     VINBERO_COMMON_LOG_TRACE2();
     return 0;
 }
 
-int vinbero_IMODULE_rDestroy(struct vinbero_common_Module* module) {
+int vinbero_Interface_MODULE_rDestroy(struct vinbero_common_Module* module) {
     VINBERO_COMMON_LOG_TRACE2();
     struct vinbero_dummy_LocalModule* localModule = module->localModule.pointer;
     free(module->localModule.pointer);
