@@ -23,7 +23,7 @@ VINBERO_INTERFACE_MODULE_FUNCTIONS;
 VINBERO_INTERFACE_BASIC_FUNCTIONS;
 VINBERO_INTERFACE_DUMMY_FUNCTIONS;
 
-int vinbero_Interface_MODULE_init(struct vinbero_common_Module* module, struct vinbero_common_Config* config, void* args[]) {
+int vinbero_Interface_MODULE_init(struct vinbero_common_Module* module) {
     VINBERO_COMMON_LOG_TRACE2();
     module->name = "vinbero_Dummy";
     module->version = "0.0.1";
@@ -31,13 +31,13 @@ int vinbero_Interface_MODULE_init(struct vinbero_common_Module* module, struct v
     module->localModule.pointer = malloc(1 * sizeof(struct vinbero_dummy_LocalModule));
 
     struct vinbero_dummy_LocalModule* localModule = module->localModule.pointer;
-    vinbero_common_Config_getString(config, module, "vinbero_dummy.message", &(localModule->message), "I HAVE NOTHING TO SAY");
-    vinbero_common_Config_getInt(config, module, "vinbero_dummy.interval", &(localModule->interval), 1);
+    vinbero_common_Config_getString(module->config, module, "vinbero_dummy.message", &(localModule->message), "I HAVE NOTHING TO SAY");
+    vinbero_common_Config_getInt(module->config, module, "vinbero_dummy.interval", &(localModule->interval), 1);
 
     return 0;
 }
 
-int vinbero_Interface_MODULE_rInit(struct vinbero_common_Module* module, struct vinbero_common_Config* config, void* args[]) {
+int vinbero_Interface_MODULE_rInit(struct vinbero_common_Module* module) {
     VINBERO_COMMON_LOG_TRACE2();
     return 0;
 }
@@ -48,7 +48,9 @@ int vinbero_Interface_BASIC_service(struct vinbero_common_Module* module, void* 
     struct vinbero_dummy_LocalModule* localModule = module->localModule.pointer;
     struct vinbero_common_Module* parentModule = GENC_TREE_NODE_GET_PARENT(module);
     while(true) {
+        VINBERO_COMMON_LOG_DEBUG("Module id: %s", module->id);
         VINBERO_COMMON_LOG_DEBUG("Module message: %s", localModule->message);
+        VINBERO_COMMON_LOG_DEBUG("Address of my parent module is %u", parentModule); 
         VINBERO_COMMON_LOG_DEBUG("ID of my parent module is %s", parentModule->id); 
         GENC_TREE_NODE_FOR_EACH_CHILD(module, index) {
             struct vinbero_common_Module* childModule = &GENC_TREE_NODE_GET_CHILD(module, index);
