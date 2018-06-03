@@ -50,7 +50,6 @@ int vinbero_Interface_BASIC_service(struct vinbero_common_Module* module, void* 
     while(true) {
         VINBERO_COMMON_LOG_DEBUG("Module id: %s", module->id);
         VINBERO_COMMON_LOG_DEBUG("Module message: %s", localModule->message);
-        VINBERO_COMMON_LOG_DEBUG("Address of my parent module is %u", parentModule); 
         VINBERO_COMMON_LOG_DEBUG("ID of my parent module is %s", parentModule->id); 
         GENC_TREE_NODE_FOR_EACH_CHILD(module, index) {
             struct vinbero_common_Module* childModule = &GENC_TREE_NODE_GET_CHILD(module, index);
