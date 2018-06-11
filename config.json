@@ -2,7 +2,7 @@
     "core": {
         "config": {"vinbero.setUid": 1001},
         "next": ["vinbero_dummy"]
-    }, 
+    },
     "vinbero_dummy": {
         "path": "/usr/local/lib/vinbero/vinbero_dummy.so",
         "config": {"vinbero_dummy.message": "Hello I am a dummy module!"},

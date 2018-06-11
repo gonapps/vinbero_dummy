@@ -25,7 +25,7 @@ VINBERO_INTERFACE_DUMMY_FUNCTIONS;
 
 int vinbero_Interface_MODULE_init(struct vinbero_common_Module* module) {
     VINBERO_COMMON_LOG_TRACE2();
-    module->name = "vinbero_Dummy";
+    module->name = "vinbero_dummy";
     module->version = "0.0.1";
     module->childrenRequired = false;
     module->localModule.pointer = malloc(1 * sizeof(struct vinbero_dummy_LocalModule));
