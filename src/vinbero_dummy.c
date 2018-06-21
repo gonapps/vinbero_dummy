@@ -42,7 +42,7 @@ int vinbero_interface_MODULE_rInit(struct vinbero_common_Module* module) {
     return 0;
 }
 
-int vinbero_interface_BASIC_service(struct vinbero_common_Module* module, void* args[]) {
+int vinbero_interface_BASIC_service(struct vinbero_common_Module* module) {
     VINBERO_COMMON_LOG_TRACE2();
     int ret;
     struct vinbero_dummy_LocalModule* localModule = module->localModule.pointer;
@@ -87,8 +87,5 @@ int vinbero_interface_MODULE_rDestroy(struct vinbero_common_Module* module) {
     VINBERO_COMMON_LOG_TRACE2();
     struct vinbero_dummy_LocalModule* localModule = module->localModule.pointer;
     free(module->localModule.pointer);
-    if(module->tlModuleKey != NULL)
-        free(module->tlModuleKey);
-//    dlclose(module->dl_handle);
     return 0;
 }
