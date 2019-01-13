@@ -52,7 +52,7 @@ int vinbero_interface_BASIC_service(struct vinbero_common_Module* module) {
         VINBERO_COMMON_LOG_DEBUG("Module message: %s", localModule->message);
         VINBERO_COMMON_LOG_DEBUG("ID of my parent module is %s", parentModule->id); 
         GENC_TREE_NODE_FOR_EACH_CHILD(module, index) {
-            struct vinbero_common_Module* childModule = &GENC_TREE_NODE_GET_CHILD(module, index);
+            struct vinbero_common_Module* childModule = GENC_TREE_NODE_GET_CHILD(module, index);
             VINBERO_COMMON_CALL(DUMMY, service, childModule, &ret, childModule);
             if(ret < 0)
                 return ret;
@@ -70,7 +70,7 @@ int vinbero_interface_DUMMY_service(struct vinbero_common_Module* module) {
     VINBERO_COMMON_LOG_DEBUG("Module message: %s", localModule->message);
     VINBERO_COMMON_LOG_DEBUG("ID of my parent module is %s", parentModule->id); 
     GENC_TREE_NODE_FOR_EACH_CHILD(module, index) {
-        struct vinbero_common_Module* childModule = &GENC_TREE_NODE_GET_CHILD(module, index);
+        struct vinbero_common_Module* childModule = GENC_TREE_NODE_GET_CHILD(module, index);
         VINBERO_COMMON_CALL(DUMMY, service, childModule, &ret, childModule);
         if(ret < 0)
             return ret;
